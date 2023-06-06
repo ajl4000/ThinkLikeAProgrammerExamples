@@ -35,7 +35,7 @@ void generateTextCharacterArray() {
       tempValueVector.push_back(intArray[i]);
     }
   }
-  /*cout << endl;
+  cout << endl;
   for(int i = 0; i < (int)tempVector.size(); i++) {
     cout << "(" << tempVector[i] << ", " << tempValueVector[i] << ") ";
   }
@@ -43,7 +43,7 @@ void generateTextCharacterArray() {
   for(const int& i : intArray) {
     cout << i << " ";
   }
-  cout << endl;*/
+  cout << endl;
 
   // if there is only one matching plaintext-ciphertext pair then swap that
   // ciphertext character with the character from the first index. Unless
@@ -65,14 +65,14 @@ void generateTextCharacterArray() {
     }
   }
 
-  /*for(int i = 0; i < 26; i++) {
+  for(int i = 0; i < 26; i++) {
     intArray[i] == i ? cout << "|" : cout << "_";
   }
   cout << endl;
   for(const int& i : intArray) {
     cout << i << " ";
   }
-  cout << endl;*/
+  cout << endl;
   
   /*for(int i = 0; i < 26; i++) {
     array[i] = {(char)(i + 65), cipherArray[i]};
