@@ -19,7 +19,7 @@ typedef struct{
 
 int myrandom(int i) {return rand()%i;}
 
-void generateTextCharacterArray() {
+void generateTextCharacterArray(textCharacter *charArray) {
   int intArray[26];
   for(int i = 0; i < 26; i++) {
     intArray[i] = i;
@@ -29,21 +29,11 @@ void generateTextCharacterArray() {
   vector<int> tempVector;
   vector<int> tempValueVector;
   for(int i = 0; i < 26; i++) {
-    intArray[i] == i ? cout << "|" : cout << "_";
     if(intArray[i] == i) {
       tempVector.push_back(i);
       tempValueVector.push_back(intArray[i]);
     }
   }
-  cout << endl;
-  for(int i = 0; i < (int)tempVector.size(); i++) {
-    cout << "(" << tempVector[i] << ", " << tempValueVector[i] << ") ";
-  }
-  cout << endl;
-  for(const int& i : intArray) {
-    cout << i << " ";
-  }
-  cout << endl;
 
   // if there is only one matching plaintext-ciphertext pair then swap that
   // ciphertext character with the character from the first index. Unless
@@ -64,19 +54,10 @@ void generateTextCharacterArray() {
       intArray[tempVector[i]] = tempValueVector[(i+1)%tempVector.size()];
     }
   }
-
-  for(int i = 0; i < 26; i++) {
-    intArray[i] == i ? cout << "|" : cout << "_";
-  }
-  cout << endl;
-  for(const int& i : intArray) {
-    cout << i << " ";
-  }
-  cout << endl;
   
-  /*for(int i = 0; i < 26; i++) {
-    array[i] = {(char)(i + 65), cipherArray[i]};
-  }*/
+  for(int i = 0; i < 26; i++) {
+    charArray[i] = {(char)(i + 65), (char)(intArray[i] + 65)};
+  }
 }
 
 void printTextCharacterArray(textCharacter array[]) {
@@ -122,18 +103,14 @@ void decryptText(char *ciphertext, const int ciphertextSize, char *decryptedText
 }
 
 int main(void) {
-  /*char cipherArray[26] {
-    'T','Y','U','C','K','P','A','S','H','Z','E','B','X',
-    'D','N','F','W','R','Q','J','O','I','M','G','L','V'
-  };
-  textCharacter charArray[26];
-  generateTextCharacterArray(charArray, cipherArray);*/
-
   srand(unsigned(time(0)));
-  //textCharacter charArray[26];
-  generateTextCharacterArray(/*charArray*/);
+  textCharacter charArray[26];
+  generateTextCharacterArray(charArray);
+  for(const textCharacter& i : charArray) {
+    cout << i.plaintextChar << " : " << i.ciphertextChar << endl;
+  }
    
-  /*char plaintext[256];
+  char plaintext[256];
   cout << "Plaintext: ";
   cin.getline(plaintext, 256);
 
@@ -145,5 +122,5 @@ int main(void) {
   sort(charArray, charArray + 26, compareCyphertext);
   char decryptedText[plaintextSize];
   decryptText(ciphertext, plaintextSize, decryptedText, charArray);
-  cout << "Decrypted Text: " << decryptedText << endl;*/
+  cout << "Decrypted Text: " << decryptedText << endl;
 }
