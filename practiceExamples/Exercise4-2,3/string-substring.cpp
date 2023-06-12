@@ -15,8 +15,8 @@ int main(void) {
         cout << sub[i];
     }
     cout << '\n';
-    delete a;
-    delete sub;
+    delete[] a;
+    delete[] sub;
     return 1;
 }
 
