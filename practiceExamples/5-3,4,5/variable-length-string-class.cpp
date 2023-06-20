@@ -16,13 +16,17 @@ class variableLengthString {
         int stringLength();
         char charAt(int position);
         void append(char c);
-        void concatenate(variableLengthString newString);
+        void concatenate(const variableLengthString& newString);
         void printList();
+        variableLengthString& operator=(const variableLengthString& rhs);
+        char operator[](int i);
+        void remove(int position, int length);
     private:        
         stringList _listHead;
         stringList _listTail;
         int _stringLength;
         void deleteList(stringList& listPtr);
+        stringList copiedList(const stringList original);
 };
 
 variableLengthString::variableLengthString() {
@@ -62,6 +66,7 @@ void variableLengthString::deleteList(stringList& listPtr) {
         listPtr = listPtr->next;
         delete temp;
     }
+    _stringLength = 0;
 }
 
 char variableLengthString::charAt(int pos) {
@@ -82,7 +87,7 @@ void variableLengthString::append(char c) {
     _stringLength++;
 }
 
-void variableLengthString::concatenate(variableLengthString s) {
+void variableLengthString::concatenate(const variableLengthString& s) {
     if(s._stringLength == 0) return;
     stringNode* thisListPtr = _listTail;
     stringNode* newListPtr = s._listHead;
@@ -105,6 +110,66 @@ void variableLengthString::printList() {
     }
 }
 
+variableLengthString::stringList variableLengthString::copiedList(const stringList original) {
+    if(original == NULL) return NULL;
+    stringNode* ogList = original;
+    stringNode* newList = new stringNode;
+    stringNode* stringHead = newList;
+    newList->letter = ogList->letter;
+    ogList = ogList->next;
+    int i = 1;
+    while(ogList != NULL) {
+        stringNode* newNode = new stringNode;
+        newNode->letter = ogList->letter;
+        newList->next = newNode;
+        newList = newList->next;
+        ogList = ogList->next;
+        i++;
+    }
+    newList->next = NULL;
+    _stringLength = i;
+    return stringHead;
+}
+
+variableLengthString& variableLengthString::operator=(const variableLengthString& rhs) {
+    if(this != &rhs) {
+        deleteList(_listHead);
+        _listHead = copiedList(rhs._listHead);
+    }
+    return *this;
+}
+
+char variableLengthString::operator[](int i) {
+    return charAt(i);
+}
+
+void variableLengthString::remove(int position, int length) {
+    if(position < 1 || position > _stringLength) return;
+    stringNode* nodePtr = _listHead;
+    stringNode* trailingPtr = NULL;
+    int i = 1;
+    while(nodePtr != NULL && i < position) {
+        trailingPtr = nodePtr;
+        nodePtr = nodePtr->next;
+        i++;
+    }
+    int j = 0;
+    while(j < length && nodePtr != NULL) {
+        stringNode* temp = nodePtr;
+        if(i == 1) {
+            nodePtr = nodePtr->next;
+            _listHead = nodePtr;
+            delete temp;
+        }
+        else {
+            nodePtr = nodePtr->next;
+            trailingPtr->next = nodePtr;
+            delete temp;
+        }
+        j++;
+    }
+}
+
 int main(void) {
     char s1[] = "Hello";
     variableLengthString vString = variableLengthString(s1, 5);
@@ -115,5 +180,13 @@ int main(void) {
     vString.concatenate(vString2);
     cout << vString.stringLength() << ", ";
     vString.printList();
+    cout << '\n';
+    vString2 = vString;
+    vString2.printList();
+    cout << '\n';
+    cout << vString[1] << " " << vString2.stringLength();
+    cout << '\n';
+    vString2.remove(6, 6);
+    vString2.printList();
     return 1;
 }
