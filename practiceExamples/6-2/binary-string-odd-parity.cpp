@@ -11,14 +11,26 @@ bool findBinaryParity(int* array, int arraySize)
     return false;
 }
 
-bool findBinaryParityRecursive(int* array, int arraySize)
+int recursiveInnerFunction(int* array, int arraySize)
 {
-    if(arraySize == 0) return 
+    if(arraySize == 0) return 0;
+    int restOfArray = recursiveInnerFunction(array, arraySize - 1);
+    if(array[arraySize - 1] == 1) restOfArray++;
+    return restOfArray;
+}
+
+bool isParityOdd(int* array, int arraySize)
+{
+    int parity = recursiveInnerFunction(array, arraySize);
+    if(parity % 2) return true;
+    return false;
 }
 
 int main()
 {
-    int array[] = {0,1,0,1,1,0,1,0,1,1,0,1,0,1,0,1,0};
-    std::cout << findBinaryParity(array, 17);
+    int array[] = {0,1,0,1,0,0,1,0,1,1,0,1,0,1,0,1,0};
+    int arraySize = 17;
+    std::cout << findBinaryParity(array, arraySize) << std::endl;
+    std::cout << isParityOdd(array, arraySize);
     return 1;
 }
